@@ -1,6 +1,6 @@
 from rest_framework import viewsets
-from .models import Profile, SocialLink, Video
-from .serializers import ProfileSerializer, SocialLinkSerializer, VideoSerializer
+from .models import Profile, SocialLink, Post
+from .serializers import ProfileSerializer, SocialLinkSerializer, PostSerializer
 
 class ProfileViewSet(viewsets.ModelViewSet):
     queryset = Profile.objects.all()
@@ -10,7 +10,6 @@ class SocialLinkViewSet(viewsets.ModelViewSet):
     queryset = SocialLink.objects.all()
     serializer_class = SocialLinkSerializer
 
-class VideoViewSet(viewsets.ModelViewSet):
-    # Endi admin panelda hamma videolarni ko'rishimiz uchun .all() qoldiramiz
-    queryset = Video.objects.all().order_by('-id') 
-    serializer_class = VideoSerializer
+class PostViewSet(viewsets.ModelViewSet):
+    queryset = Post.objects.all()
+    serializer_class = PostSerializer

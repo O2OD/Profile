@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Profile, SocialLink, Video
+from .models import Profile, SocialLink, Post
 
 class ProfileSerializer(serializers.ModelSerializer):
     class Meta:
@@ -11,7 +11,7 @@ class SocialLinkSerializer(serializers.ModelSerializer):
         model = SocialLink
         fields = '__all__'
 
-class VideoSerializer(serializers.ModelSerializer):
+class PostSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Video
+        model = Post
         fields = '__all__'

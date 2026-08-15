@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Profile, SocialLink, Video
+from .models import Profile, SocialLink, Post
 
 @admin.register(Profile)
 class ProfileAdmin(admin.ModelAdmin):
@@ -8,10 +8,9 @@ class ProfileAdmin(admin.ModelAdmin):
 @admin.register(SocialLink)
 class SocialLinkAdmin(admin.ModelAdmin):
     list_display = ('platform', 'url', 'order')
-    list_editable = ('order',) # Admin panelni o'zidan turib tartibni o'zgartira oladi
+    list_editable = ('order',)
 
-@admin.register(Video)
-class VideoAdmin(admin.ModelAdmin):
-    list_display = ('title', 'is_active', 'order')
-    list_editable = ('is_active', 'order')
-    list_filter = ('is_active',) # Faqat aktiv yoki noaktiv videolarni saralash funksiyasi
+@admin.register(Post)
+class PostAdmin(admin.ModelAdmin):
+    list_display = ('title', 'type', 'created_at')
+    list_filter = ('type',)
