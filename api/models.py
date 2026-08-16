@@ -7,31 +7,35 @@ class Profile(models.Model):
 
 class SocialLink(models.Model):
     platform = models.CharField(max_length=50)
-    url = models.URLField()
+    url = models.TextField()
     order = models.PositiveIntegerField(default=0)
     
     class Meta:
         ordering = ['order']
 
 class Post(models.Model):
-    # Post turi: Video yoki Oddiy rasm/status
+    # Post turi: Video, Rasm yoki Audio
     POST_TYPES = (
         ('video', 'YouTube Video'),
         ('image', 'Rasm va Status'),
+        ('audio', 'Audio / Qo\'shiq'), # Yangi tur qo'shildi
     )
     type = models.CharField(max_length=10, choices=POST_TYPES, default='video')
     
     title = models.CharField(max_length=255)
-    description = models.TextField(blank=True, null=True) # Katta matn yozish uchun
+    description = models.TextField(blank=True, null=True)
     
-    # Agar video bo'lsa
+    # Video uchun
     video_url = models.URLField(blank=True, null=True)
-    thumbnail_url = models.URLField(blank=True, null=True) # YouTube'dan olingan rasm
+    thumbnail_url = models.URLField(blank=True, null=True)
     
-    # Agar oddiy rasm/status bo'lsa
+    # Rasm uchun
     image = models.ImageField(upload_to='posts/', blank=True, null=True)
+
+    # Audio uchun (YANGI)
+    audio = models.FileField(upload_to='audios/', blank=True, null=True)
     
-    created_at = models.DateTimeField(auto_now_add=True) # Qachon qo'shilgani
+    created_at = models.DateTimeField(auto_now_add=True)
     
     class Meta:
-        ordering = ['-created_at'] # Eng yangilari birinchi chiqadi
+        ordering = ['-created_at']
