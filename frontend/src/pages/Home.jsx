@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { FaSun, FaMoon, FaBorderAll, FaVideo, FaImage, FaMusic } from 'react-icons/fa';
-import { Helmet } from 'react-helmet-async'; // SEO UCHUN
+import { FaSun, FaMoon, FaBorderAll, FaVideo, FaImage, FaMusic, FaChevronRight, FaChevronLeft } from 'react-icons/fa';
+import { Helmet } from 'react-helmet-async';
 import Header from '../components/Header';
 import PostCard from '../components/PostCard';
 
@@ -14,8 +14,9 @@ const Home = () => {
   
   const [activeTab, setActiveTab] = useState('all');
   
-  // 🌟 YANGI: Paginatsiya (boshida 6 ta post ko'rinadi)
-  const [visibleCount, setVisibleCount] = useState(6);
+  // 🌟 YANGI: SAHIFALASH (PAGINATION) MANTIQI
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 12; // Bitta sahifada 12 ta post chiqadi
 
   const toggleTheme = () => {
     setDarkMode(!darkMode);
@@ -41,23 +42,30 @@ const Home = () => {
     fetchData();
   }, []);
 
-  // Tab o'zgarganda ko'rinadigan postlar sonini qayta 6 taga tushiramiz
+  // Tab o'zgarganda sahifani yana 1-ga qaytaramiz
   const handleTabChange = (tab) => {
     setActiveTab(tab);
-    setVisibleCount(6);
+    setCurrentPage(1);
   };
 
+  // Postlarni filtrlash va qirqib olish (Pagination)
   const filteredPosts = posts.filter(post => activeTab === 'all' ? true : post.type === activeTab);
+  const totalPages = Math.ceil(filteredPosts.length / itemsPerPage);
   
-  // 🌟 Faqatgina visibleCount gacha bo'lgan postlarni qirqib olamiz
-  const visiblePosts = filteredPosts.slice(0, visibleCount);
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const visiblePosts = filteredPosts.slice(startIndex, startIndex + itemsPerPage);
+
+  // Sahifa o'zgarganda tepaga silliq ko'tarilish
+  const handlePageChange = (pageNumber) => {
+    setCurrentPage(pageNumber);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
 
   if (loading) return <div className={`min-h-screen flex items-center justify-center ${darkMode ? 'bg-gray-900' : 'bg-gray-50'}`}><div className="animate-spin rounded-full h-12 w-12 border-t-2 border-blue-500"></div></div>;
 
   return (
-    <div className={`min-h-screen font-sans transition-colors duration-500 ${darkMode ? 'bg-gradient-to-br from-gray-900 via-gray-800 to-black text-white' : 'bg-gradient-to-br from-blue-50 via-white to-purple-50 text-gray-900'}`}>
+    <div className={`min-h-screen font-sans transition-colors duration-500 ${darkMode ? 'bg-[#0f172a] text-white' : 'bg-[#f8f9fa] text-gray-900'}`}>
       
-      {/* 🌟 YANGI: SEO META TEGLAR - Telegram yoki Instada ssilka ulashganda chiroyli chiqadi */}
       {profile && (
         <Helmet>
           <title>{profile.name} - Rasmiy Sahifa</title>
@@ -69,47 +77,102 @@ const Home = () => {
         </Helmet>
       )}
 
+      {/* Tungi rejim */}
       <div className="absolute top-6 right-6 z-50">
-        <button onClick={toggleTheme} className="p-3 rounded-full bg-white/20 backdrop-blur-md shadow-lg border border-gray-200 dark:border-gray-700 hover:scale-110 transition-transform">
-          {darkMode ? <FaSun className="text-yellow-400 text-xl" /> : <FaMoon className="text-gray-600 text-xl" />}
+        <button onClick={toggleTheme} className="p-3.5 rounded-full bg-white/40 dark:bg-black/40 backdrop-blur-lg shadow-lg border border-white/50 dark:border-gray-700/50 hover:scale-110 transition-transform">
+          {darkMode ? <FaSun className="text-yellow-400 text-xl" /> : <FaMoon className="text-gray-700 text-xl" />}
         </button>
       </div>
 
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col min-h-screen pt-8">
+      {/* 🌟 YANGILANGAN: KENGAYTIRILGAN EKRAN (max-w-[1400px]) */}
+      <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-10 flex flex-col min-h-screen pt-12 pb-10">
         
         {profile ? <Header profile={profile} socialLinks={socialLinks} darkMode={darkMode} /> : null}
 
-        <main className="flex-grow w-full">
-          <div className="flex flex-wrap justify-center border-t border-gray-300 dark:border-gray-700 mb-8 gap-2">
-            <button onClick={() => handleTabChange('all')} className={`flex items-center gap-2 px-4 py-4 font-bold border-t-2 transition-all ${activeTab === 'all' ? 'border-gray-900 dark:border-white text-gray-900 dark:text-white' : 'border-transparent text-gray-500'}`}><FaBorderAll /> Barchasi</button>
-            <button onClick={() => handleTabChange('video')} className={`flex items-center gap-2 px-4 py-4 font-bold border-t-2 transition-all ${activeTab === 'video' ? 'border-gray-900 dark:border-white text-gray-900 dark:text-white' : 'border-transparent text-gray-500'}`}><FaVideo /> Videolar</button>
-            <button onClick={() => handleTabChange('image')} className={`flex items-center gap-2 px-4 py-4 font-bold border-t-2 transition-all ${activeTab === 'image' ? 'border-gray-900 dark:border-white text-gray-900 dark:text-white' : 'border-transparent text-gray-500'}`}><FaImage /> Rasmlar</button>
-            <button onClick={() => handleTabChange('audio')} className={`flex items-center gap-2 px-4 py-4 font-bold border-t-2 transition-all ${activeTab === 'audio' ? 'border-gray-900 dark:border-white text-gray-900 dark:text-white' : 'border-transparent text-gray-500'}`}><FaMusic /> Qo'shiqlar</button>
+        <main className="flex-grow w-full mt-6">
+          
+          {/* Menyular */}
+          <div className="flex flex-wrap justify-center mb-12 gap-2 sm:gap-4">
+            <button onClick={() => handleTabChange('all')} className={`flex items-center gap-2 px-6 py-3 rounded-2xl font-bold transition-all ${activeTab === 'all' ? 'bg-gray-900 text-white dark:bg-white dark:text-gray-900 shadow-lg' : 'bg-white text-gray-600 dark:bg-gray-800 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 shadow-sm'}`}><FaBorderAll /> Barchasi</button>
+            <button onClick={() => handleTabChange('video')} className={`flex items-center gap-2 px-6 py-3 rounded-2xl font-bold transition-all ${activeTab === 'video' ? 'bg-red-600 text-white shadow-lg shadow-red-500/30' : 'bg-white text-gray-600 dark:bg-gray-800 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 shadow-sm'}`}><FaVideo /> Videolar</button>
+            <button onClick={() => handleTabChange('image')} className={`flex items-center gap-2 px-6 py-3 rounded-2xl font-bold transition-all ${activeTab === 'image' ? 'bg-blue-600 text-white shadow-lg shadow-blue-500/30' : 'bg-white text-gray-600 dark:bg-gray-800 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 shadow-sm'}`}><FaImage /> Rasmlar</button>
+            <button onClick={() => handleTabChange('audio')} className={`flex items-center gap-2 px-6 py-3 rounded-2xl font-bold transition-all ${activeTab === 'audio' ? 'bg-purple-600 text-white shadow-lg shadow-purple-500/30' : 'bg-white text-gray-600 dark:bg-gray-800 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 shadow-sm'}`}><FaMusic /> Qo'shiqlar</button>
           </div>
           
+          {/* 🌟 YANGILANGAN GRID: Noutbukda 4 ta, Planshetda 2 ta, Telefonda 1 ta */}
           {visiblePosts.length > 0 ? (
             <>
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 sm:gap-8">
                 {visiblePosts.map((post) => <PostCard key={post.id} post={post} />)}
               </div>
               
-              {/* 🌟 YANGI: YANA KO'RSATISH TUGMASI */}
-              {visibleCount < filteredPosts.length && (
-                <div className="mt-10 flex justify-center">
+              {/* 🌟 YANGI: KLASSIK RAQAMLI PAGINATION (Sahifalash) */}
+              {totalPages > 1 && (
+                <div className="mt-16 flex justify-center items-center gap-2 sm:gap-3">
+                  
+                  {/* Orqaga tugmasi */}
                   <button 
-                    onClick={() => setVisibleCount(prev => prev + 6)}
-                    className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-full shadow-lg transition-transform hover:scale-105"
+                    onClick={() => handlePageChange(currentPage - 1)}
+                    disabled={currentPage === 1}
+                    className="w-12 h-12 flex items-center justify-center rounded-xl bg-gray-200 dark:bg-[#1e293b] text-gray-500 dark:text-gray-400 hover:bg-gray-300 dark:hover:bg-gray-700 disabled:opacity-30 disabled:cursor-not-allowed transition-colors font-bold"
                   >
-                    Yana ko'rsatish ({filteredPosts.length - visibleCount} ta qoldi)
+                    <FaChevronLeft className="text-sm" />
                   </button>
+
+                  {/* Raqamlar */}
+                  {[...Array(totalPages)].map((_, index) => {
+                    const page = index + 1;
+                    // Katta raqamlarda faqat boshini, oxirini va o'rtasini ko'rsatish (Siz tashlagan rasmdagidek)
+                    if (
+                      page === 1 || 
+                      page === totalPages || 
+                      (page >= currentPage - 1 && page <= currentPage + 1)
+                    ) {
+                      return (
+                        <button
+                          key={page}
+                          onClick={() => handlePageChange(page)}
+                          className={`w-12 h-12 flex items-center justify-center rounded-xl font-black text-lg transition-all duration-300 ${
+                            currentPage === page
+                              ? 'bg-[#4ade80] text-gray-900 shadow-lg shadow-green-500/20' // Faol yashil rang
+                              : 'bg-gray-200 dark:bg-[#1e293b] text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-700'
+                          }`}
+                        >
+                          {page}
+                        </button>
+                      );
+                    } else if (
+                      page === currentPage - 2 ||
+                      page === currentPage + 2
+                    ) {
+                      return <span key={page} className="text-gray-500 font-bold px-1">...</span>;
+                    }
+                    return null;
+                  })}
+
+                  {/* Oldinga tugmasi */}
+                  <button 
+                    onClick={() => handlePageChange(currentPage + 1)}
+                    disabled={currentPage === totalPages}
+                    className="w-12 h-12 flex items-center justify-center rounded-xl bg-gray-200 dark:bg-[#1e293b] text-gray-500 dark:text-gray-400 hover:bg-gray-300 dark:hover:bg-gray-700 disabled:opacity-30 disabled:cursor-not-allowed transition-colors font-bold"
+                  >
+                    <FaChevronRight className="text-sm" />
+                  </button>
+                  
                 </div>
               )}
             </>
           ) : (
-            <div className="text-center py-20 text-gray-400">Ushbu bo'limda hozircha hech narsa yo'q.</div>
+            <div className="text-center py-24 text-gray-400 bg-white/50 dark:bg-gray-800/50 rounded-[2rem] border border-gray-200 dark:border-gray-700 max-w-3xl mx-auto">
+              <span className="text-5xl block mb-4">📭</span>
+              <p className="font-bold text-lg">Ushbu bo'limda hozircha hech narsa yo'q.</p>
+            </div>
           )}
         </main>
-        <footer className="py-8 text-center text-sm text-gray-500">© {new Date().getFullYear()} Barcha huquqlar himoyalangan.</footer>
+        
+        <footer className="mt-20 pt-8 border-t border-gray-200 dark:border-gray-800 text-center text-sm font-bold text-gray-400">
+          © {new Date().getFullYear()} Barcha huquqlar himoyalangan.
+        </footer>
       </div>
     </div>
   );
