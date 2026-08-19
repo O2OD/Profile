@@ -137,14 +137,14 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
     "https://profile-mansur.vercel.app",
-    "https://apartment.uz",
-    "https://www.apartment.uz"
+    "https://many30.uz",
+    "https://www.many30.uz"
 ]
 
 CSRF_TRUSTED_ORIGINS = [
     "https://profile-mansur.vercel.app",
-    "https://apartment.uz",
-    "https://www.apartment.uz"
+    "https://many30.uz",
+    "https://www.many30.uz"
 ]
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
