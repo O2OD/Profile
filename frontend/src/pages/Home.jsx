@@ -29,9 +29,9 @@ const Home = () => {
       setLoading(true);
       try {
         const [profileRes, linksRes, postsRes] = await Promise.allSettled([
-          axios.get('http://127.0.0.1:8000/api/profile/'),
-          axios.get('http://127.0.0.1:8000/api/social-links/'),
-          axios.get('http://127.0.0.1:8000/api/posts/')
+          axios.get('hhttps://profile-2nsm.onrender.com/api/profile/'),
+          axios.get('https://profile-2nsm.onrender.com/api/social-links/'),
+          axios.get('https://profile-2nsm.onrender.com/api/posts/')
         ]);
         if (profileRes.status === 'fulfilled' && profileRes.value.data.length > 0) setProfile(profileRes.value.data[0]);
         if (linksRes.status === 'fulfilled') setSocialLinks(linksRes.value.data);

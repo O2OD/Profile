@@ -58,9 +58,9 @@ const AdminDashboard = () => {
   const fetchAllData = async () => {
     try {
       const [postsRes, profileRes, linksRes] = await Promise.all([
-        axios.get('http://127.0.0.1:8000/api/posts/'),
-        axios.get('http://127.0.0.1:8000/api/profile/'),
-        axios.get('http://127.0.0.1:8000/api/social-links/')
+        axios.get('https://profile-2nsm.onrender.com/api/posts/'),
+        axios.get('https://profile-2nsm.onrender.com/api/profile/'),
+        axios.get('https://profile-2nsm.onrender.com/api/social-links/')
       ]);
       setPosts(postsRes.data);
       if (profileRes.data.length > 0) setProfile(profileRes.data[0]);
@@ -78,7 +78,7 @@ const AdminDashboard = () => {
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://127.0.0.1:8000/api/token/', {
+      const response = await axios.post('https://profile-2nsm.onrender.com/api/token/', {
         username: username,
         password: password
       });
@@ -124,7 +124,7 @@ const AdminDashboard = () => {
     }
 
     try {
-      await axios.post('http://127.0.0.1:8000/api/posts/', formData, { headers: { 'Content-Type': 'multipart/form-data' } });
+      await axios.post('hhttps://profile-2nsm.onrender.com/api/posts/', formData, { headers: { 'Content-Type': 'multipart/form-data' } });
       setNewPost({ type: 'video', title: '', description: '', video_url: '', image: null, audio: null }); 
       fetchAllData(); 
       showToast("Saytga muvaffaqiyatli joylandi!", "success");
@@ -143,8 +143,8 @@ const AdminDashboard = () => {
     if (profileImageFile) formData.append('image', profileImageFile);
 
     try {
-      if (profile.id) await axios.put(`http://127.0.0.1:8000/api/profile/${profile.id}/`, formData, { headers: { 'Content-Type': 'multipart/form-data' } });
-      else await axios.post('http://127.0.0.1:8000/api/profile/', formData, { headers: { 'Content-Type': 'multipart/form-data' } });
+      if (profile.id) await axios.put(`https://profile-2nsm.onrender.com/api/profile/${profile.id}/`, formData, { headers: { 'Content-Type': 'multipart/form-data' } });
+      else await axios.post('https://profile-2nsm.onrender.com/api/profile/', formData, { headers: { 'Content-Type': 'multipart/form-data' } });
       fetchAllData();
       showToast("Profil muvaffaqiyatli saqlandi!", "success");
     } catch (error) { 
@@ -156,7 +156,7 @@ const AdminDashboard = () => {
   const handleAddLink = async (e) => {
     e.preventDefault();
     try { 
-      await axios.post('http://127.0.0.1:8000/api/social-links/', newLink); 
+      await axios.post('https://profile-2nsm.onrender.com/api/social-links/', newLink); 
       setNewLink({ ...newLink, url: '' }); 
       fetchAllData(); 
       showToast("Tarmoq qo'shildi!", "success");
@@ -168,7 +168,7 @@ const AdminDashboard = () => {
   const confirmDelete = async () => {
     if (!deleteModal.id || !deleteModal.type) return;
     try { 
-      await axios.delete(`http://127.0.0.1:8000/api/${deleteModal.type}/${deleteModal.id}/`); 
+      await axios.delete(`https://profile-2nsm.onrender.com/api/${deleteModal.type}/${deleteModal.id}/`); 
       fetchAllData(); 
       showToast("Muvaffaqiyatli o'chirildi!", "success");
     } catch (error) { 
