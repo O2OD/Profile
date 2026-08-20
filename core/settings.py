@@ -29,7 +29,7 @@ environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
 SECRET_KEY = env('SECRET_KEY', default='insecure-secret-key-for-local-use')
 DEBUG = env('DEBUG')
 
-ALLOWED_HOSTS = ['*', 'profile-2nsm.onrender.com',]
+ALLOWED_HOSTS = env.list('ALLOWED_HOSTS', default=['many30.uz', 'www.many30.uz'])
 
 
 # Application definition
