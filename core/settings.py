@@ -168,10 +168,18 @@ SIMPLE_JWT = {
 
 
 CLOUDINARY_STORAGE = {
-    'CLOUD_NAME': 'usqqnzoc', # Aniq nomni dashboarddan tekshirib yozasiz
-    'API_KEY': '515985583239483',
-    'API_SECRET': 'AQcyoOHiZkXhM1QmyJHzKyLY0Fc',
+    'CLOUD_NAME': os.environ.get('CLOUDINARY_CLOUD_NAME', 'usqqnzoc'),
+    'API_KEY': os.environ.get('CLOUDINARY_API_KEY'),
+    'API_SECRET': os.environ.get('CLOUDINARY_API_SECRET'),
+
+
 }
 
-# Barcha yuklanadigan rasmlar va media fayllarni to'g'ridan-to'g'ri Cloudinary'ga jo'natish:
-DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+STORAGES = {
+    "default": {
+        "BACKEND": "cloudinary_storage.storage.MediaCloudinaryStorage",
+    },
+    "staticfiles": {
+        "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage",
+    },
+}
