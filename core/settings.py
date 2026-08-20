@@ -46,6 +46,8 @@ INSTALLED_APPS = [
     'corsheaders',
     'rest_framework_simplejwt',
     'api',
+    'cloudinary',
+    'cloudinary_storage',
 ]
 
 MIDDLEWARE = [
@@ -163,3 +165,13 @@ SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(days=1),
     'REFRESH_TOKEN_LIFETIME': timedelta(days=7),
 }
+
+
+CLOUDINARY_STORAGE = {
+    'CLOUD_NAME': 'usqqnzoc', # Aniq nomni dashboarddan tekshirib yozasiz
+    'API_KEY': '515985583239483',
+    'API_SECRET': 'AQcyoOHiZkXhM1QmyJHzKyLY0Fc',
+}
+
+# Barcha yuklanadigan rasmlar va media fayllarni to'g'ridan-to'g'ri Cloudinary'ga jo'natish:
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
