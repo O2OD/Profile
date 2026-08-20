@@ -335,7 +335,7 @@ const AdminDashboard = () => {
                <div className="flex flex-col md:flex-row gap-6 mb-6">
                 <div className="flex flex-col items-center gap-3">
                   <div className="w-32 h-32 rounded-full bg-gray-200 border-4 border-white shadow overflow-hidden flex items-center justify-center">
-                    {profileImageFile ? <img src={URL.createObjectURL(profileImageFile)} className="w-full h-full object-cover" alt="yangi" /> : profile.image ? <img src={profile.image} className="w-full h-full object-cover" alt="profil" /> : <FaUser className="text-4xl text-gray-400" />}
+                    {profileImageFile ? <img src={URL.createObjectURL(profileImageFile)} className="w-full h-full object-cover" alt="yangi" /> : profile.image ? <img src={profile.image.startsWith('http') ? profile.image : `https://profile-2nsm.onrender.com${profile.image}`} className="w-full h-full object-cover" alt="profil" /> : <FaUser className="text-4xl text-gray-400" />}
                   </div>
                   <label className="cursor-pointer bg-blue-100 hover:bg-blue-200 text-blue-700 px-4 py-2 rounded-lg text-sm font-bold transition-colors">Rasm tanlash<input type="file" accept="image/*" className="hidden" onChange={(e) => setProfileImageFile(e.target.files[0])} /></label>
                 </div>
