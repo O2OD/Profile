@@ -124,7 +124,7 @@ const AdminDashboard = () => {
     }
 
     try {
-      await axios.post('hhttps://profile-2nsm.onrender.com/api/posts/', formData, { headers: { 'Content-Type': 'multipart/form-data' } });
+      await axios.post('https://profile-2nsm.onrender.com/api/posts/', formData, { headers: { 'Content-Type': 'multipart/form-data' } });
       setNewPost({ type: 'video', title: '', description: '', video_url: '', image: null, audio: null }); 
       fetchAllData(); 
       showToast("Saytga muvaffaqiyatli joylandi!", "success");
