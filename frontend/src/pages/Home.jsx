@@ -29,7 +29,7 @@ const Home = () => {
       setLoading(true);
       try {
         const [profileRes, linksRes, postsRes] = await Promise.allSettled([
-          axios.get('h/api/profile/'),
+          axios.get('/api/profile/'),
           axios.get('/api/social-links/'),
           axios.get('/api/posts/')
         ]);
