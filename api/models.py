@@ -34,7 +34,12 @@ class Post(models.Model):
     image = models.ImageField(upload_to='posts/', blank=True, null=True)
 
     # Audio uchun (YANGI)
-    audio = models.FileField(upload_to='audio/', storage=VideoMediaCloudinaryStorage(), blank=True, null=True)
+    audio = models.FileField(
+        upload_to='audios/', 
+        storage=VideoMediaCloudinaryStorage(), 
+        blank=True, 
+        null=True
+        )
     
     created_at = models.DateTimeField(auto_now_add=True)
     
