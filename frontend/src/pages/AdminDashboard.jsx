@@ -58,9 +58,9 @@ const AdminDashboard = () => {
   const fetchAllData = async () => {
     try {
       const [postsRes, profileRes, linksRes] = await Promise.all([
-        axios.get('https://profile-2nsm.onrender.com/api/posts/'),
-        axios.get('https://profile-2nsm.onrender.com/api/profile/'),
-        axios.get('https://profile-2nsm.onrender.com/api/social-links/')
+        axios.get('/api/posts/'),
+        axios.get('/api/profile/'),
+        axios.get('/api/social-links/')
       ]);
       setPosts(postsRes.data);
       if (profileRes.data.length > 0) setProfile(profileRes.data[0]);
@@ -78,7 +78,7 @@ const AdminDashboard = () => {
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('https://profile-2nsm.onrender.com/api/token/', {
+      const response = await axios.post('/api/token/', {
         username: username,
         password: password
       });
@@ -124,7 +124,7 @@ const AdminDashboard = () => {
     }
 
     try {
-      await axios.post('https://profile-2nsm.onrender.com/api/posts/', formData, { headers: { 'Content-Type': 'multipart/form-data' } });
+      await axios.post('/api/posts/', formData, { headers: { 'Content-Type': 'multipart/form-data' } });
       setNewPost({ type: 'video', title: '', description: '', video_url: '', image: null, audio: null }); 
       fetchAllData(); 
       showToast("Saytga muvaffaqiyatli joylandi!", "success");
@@ -143,8 +143,8 @@ const AdminDashboard = () => {
     if (profileImageFile) formData.append('image', profileImageFile);
 
     try {
-      if (profile.id) await axios.put(`https://profile-2nsm.onrender.com/api/profile/${profile.id}/`, formData, { headers: { 'Content-Type': 'multipart/form-data' } });
-      else await axios.post('https://profile-2nsm.onrender.com/api/profile/', formData, { headers: { 'Content-Type': 'multipart/form-data' } });
+      if (profile.id) await axios.put(`/api/profile/${profile.id}/`, formData, { headers: { 'Content-Type': 'multipart/form-data' } });
+      else await axios.post('/api/profile/', formData, { headers: { 'Content-Type': 'multipart/form-data' } });
       fetchAllData();
       showToast("Profil muvaffaqiyatli saqlandi!", "success");
     } catch (error) { 
@@ -156,7 +156,7 @@ const AdminDashboard = () => {
   const handleAddLink = async (e) => {
     e.preventDefault();
     try { 
-      await axios.post('https://profile-2nsm.onrender.com/api/social-links/', newLink); 
+      await axios.post('/api/social-links/', newLink); 
       setNewLink({ ...newLink, url: '' }); 
       fetchAllData(); 
       showToast("Tarmoq qo'shildi!", "success");
@@ -168,7 +168,7 @@ const AdminDashboard = () => {
   const confirmDelete = async () => {
     if (!deleteModal.id || !deleteModal.type) return;
     try { 
-      await axios.delete(`https://profile-2nsm.onrender.com/api/${deleteModal.type}/${deleteModal.id}/`); 
+      await axios.delete(`/api/${deleteModal.type}/${deleteModal.id}/`); 
       fetchAllData(); 
       showToast("Muvaffaqiyatli o'chirildi!", "success");
     } catch (error) { 
@@ -335,7 +335,7 @@ const AdminDashboard = () => {
                <div className="flex flex-col md:flex-row gap-6 mb-6">
                 <div className="flex flex-col items-center gap-3">
                   <div className="w-32 h-32 rounded-full bg-gray-200 border-4 border-white shadow overflow-hidden flex items-center justify-center">
-                    {profileImageFile ? <img src={URL.createObjectURL(profileImageFile)} className="w-full h-full object-cover" alt="yangi" /> : profile.image ? <img src={profile.image.startsWith('http') ? profile.image : `https://profile-2nsm.onrender.com${profile.image}`} className="w-full h-full object-cover" alt="profil" /> : <FaUser className="text-4xl text-gray-400" />}
+                    {profileImageFile ? <img src={URL.createObjectURL(profileImageFile)} className="w-full h-full object-cover" alt="yangi" /> : profile.image ? <img src={profile.image.startsWith('http') ? profile.image : `${profile.image}`} className="w-full h-full object-cover" alt="profil" /> : <FaUser className="text-4xl text-gray-400" />}
                   </div>
                   <label className="cursor-pointer bg-blue-100 hover:bg-blue-200 text-blue-700 px-4 py-2 rounded-lg text-sm font-bold transition-colors">Rasm tanlash<input type="file" accept="image/*" className="hidden" onChange={(e) => setProfileImageFile(e.target.files[0])} /></label>
                 </div>
