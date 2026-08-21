@@ -10,8 +10,8 @@ function App() {
         {/* Asosiy sayt */}
         <Route path="/" element={<Home />} />
         
-        {/* Yashirin Admin Panel */}
-        <Route path="/admin" element={<AdminDashboard />} />
+        {/* Yashirin Admin Panel (nomini /dashboard yoki /secret-admin qilamiz) */}
+        <Route path="/dashboard" element={<AdminDashboard />} />
       </Routes>
     </BrowserRouter>
   );
