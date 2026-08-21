@@ -138,13 +138,15 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
-    "https://profile-mansur.vercel.app",
+    "http://153.75.244.113",
+    "https://153.75.244.113",
     "https://many30.uz",
     "https://www.many30.uz"
 ]
 
 CSRF_TRUSTED_ORIGINS = [
-    "https://profile-mansur.vercel.app",
+    "http://153.75.244.113",
+    "https://153.75.244.113",
     "https://many30.uz",
     "https://www.many30.uz"
 ]
